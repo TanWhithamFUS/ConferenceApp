@@ -1,0 +1,42 @@
+<%- include('../partials/manage-top') %>
+<%- include('../partials/event-nav') %>
+<form class="card form" method="post">
+  <%- include('../partials/csrf') %>
+  <h2>Post an announcement</h2>
+  <label>Title <span class="muted small">(this is the notification headline)</span>
+    <input name="title" maxlength="120" value="<%= form.title || '' %>" required placeholder="e.g. Session 3 is moving to the Main Arena">
+  </label>
+  <label>Message <textarea name="body" rows="4" maxlength="2000"><%= form.body || '' %></textarea></label>
+  <label class="check"><input type="checkbox" name="send_push" value="1" <%= form.send_push ? 'checked' : '' %>>
+    Send as a push notification to <strong><%= subscribers %></strong> device<%= subscribers === 1 ? '' : 's' %>
+  </label>
+  <% if (isAdmin) { %>
+  <label class="check"><input type="checkbox" name="from_central" value="1" checked> Label as from Steubenville Conferences</label>
+  <% } %>
+  <% if (!event.published) { %><p class="muted small">This conference is a draft, so notifications won’t be sent until it’s published.</p><% } %>
+  <button class="btn">Post</button>
+</form>
+<section class="card">
+  <h2>Posted</h2>
+  <% if (!announcements.length) { %><p class="muted">Nothing yet.</p><% } %>
+  <ul class="admin-list">
+    <% for (const a of announcements) { %>
+    <li>
+      <div class="admin-list-main">
+        <strong><%= a.title %></strong>
+        <% if (a.from_central) { %><span class="badge badge-gold">Central</span><% } %>
+        <div class="muted small"><%= u.timeAgo(a.created_at) %><% if (a.pushed_count) { %> · notified <%= a.pushed_count %> device<%= a.pushed_count === 1 ? '' : 's' %><% } %></div>
+        <% if (a.body) { %><div class="small clamp"><%= a.body %></div><% } %>
+      </div>
+      <% if (!a.from_central || isAdmin) { %>
+      <div class="admin-list-actions">
+        <form method="post" action="/manage/events/<%= event.id %>/announcements/<%= a.id %>/delete" data-confirm="Remove this announcement?">
+          <%- include('../partials/csrf') %><button class="btn btn-small btn-ghost">Remove</button>
+        </form>
+      </div>
+      <% } %>
+    </li>
+    <% } %>
+  </ul>
+</section>
+<%- include('../partials/manage-foot') %>

@@ -1,0 +1,13 @@
+<div class="grid-2">
+  <label>Kind
+    <select name="category">
+      <option value="info" <%= form.category === 'info' ? 'selected' : '' %>>Info section</option>
+      <option value="faq" <%= form.category === 'faq' ? 'selected' : '' %>>FAQ</option>
+    </select>
+  </label>
+  <label>Order <span class="muted small">(lower shows first)</span><input type="number" name="sort" value="<%= form.sort || 0 %>"></label>
+</div>
+<label><span data-faq-label>Title / question</span> <input name="title" value="<%= form.title || '' %>" required placeholder="e.g. Parking"></label>
+<label>Details <span class="muted small">Links become clickable. Use **bold** for emphasis.</span>
+  <textarea name="body" rows="6"><%= form.body || '' %></textarea>
+</label>

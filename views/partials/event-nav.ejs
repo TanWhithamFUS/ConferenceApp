@@ -1,0 +1,22 @@
+<div class="manage-event-head">
+  <div>
+    <div class="eyebrow">
+      <%= event.audience === 'youth' ? 'Youth' : 'Adult' %> ·
+      <%= event.operated_by === 'partner' ? (event.partner_name || 'Partner-run') : 'Franciscan-run' %>
+      · <%= u.formatDateRange(event.start_date, event.end_date) %>
+    </div>
+    <h1><%= event.name %></h1>
+  </div>
+  <div class="button-row">
+    <span class="badge <%= event.published ? 'badge-green' : 'badge-gray' %>"><%= event.published ? 'Published' : 'Draft' %></span>
+    <a class="btn btn-small btn-outline" href="/e/<%= event.slug %>" target="_blank" rel="noopener">View app ↗</a>
+  </div>
+</div>
+<nav class="subnav">
+  <% const items = [['details', '', 'Details'], ['schedule', '/schedule', 'Schedule'], ['info', '/info', 'Info & FAQ'], ['announcements', '/announcements', 'Announcements']];
+     if (isAdmin) items.push(['speakers', '/speakers', 'Speakers'], ['editors', '/editors', 'Editors']);
+     items.push(['qr', '/qr', 'QR code']); %>
+  <% for (const [key, path, label] of items) { %>
+  <a href="/manage/events/<%= event.id %><%= path %>" class="<%= tab === key ? 'active' : '' %>"><%= label %></a>
+  <% } %>
+</nav>

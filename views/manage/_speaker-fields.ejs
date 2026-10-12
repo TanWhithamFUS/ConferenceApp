@@ -1,0 +1,6 @@
+<div class="grid-2">
+  <label>Name <input name="name" value="<%= form.name || '' %>" required></label>
+  <label>Title / role <input name="role_title" value="<%= form.role_title || '' %>" placeholder="e.g. Keynote Speaker, Author"></label>
+</div>
+<label>Photo link <span class="muted small">(https://… image URL)</span><input type="url" name="photo_url" value="<%= form.photo_url || '' %>"></label>
+<label>Bio <textarea name="bio" rows="5"><%= form.bio || '' %></textarea></label>

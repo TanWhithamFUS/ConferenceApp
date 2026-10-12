@@ -1,0 +1,8 @@
+<div class="grid-4">
+  <label>Day <select name="day_number"><% for (let d = 1; d <= 5; d++) { %><option value="<%= d %>" <%= Number(f.day_number) === d ? 'selected' : '' %>>Day <%= d %></option><% } %></select></label>
+  <label>Start <input type="time" name="start_time" value="<%= f.start_time || '' %>" required></label>
+  <label>End <input type="time" name="end_time" value="<%= f.end_time || '' %>"></label>
+  <label>Type <select name="kind"><% for (const [k, v] of Object.entries(KINDS)) { %><option value="<%= k %>" <%= f.kind === k ? 'selected' : '' %>><%= v %></option><% } %></select></label>
+</div>
+<label>Title <input name="title" value="<%= f.title || '' %>" required></label>
+<label>Description <textarea name="description" rows="2"><%= f.description || '' %></textarea></label>

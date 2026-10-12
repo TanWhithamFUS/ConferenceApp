@@ -1,0 +1,43 @@
+<%- include('../partials/manage-top') %>
+<h1>People</h1>
+<% if (created) { %>
+<div class="card credentials">
+  <h2><%= created.reset ? 'Password reset' : 'Account created' %></h2>
+  <p>Share these details securely. The password is shown only once.</p>
+  <dl><dt>Sign-in page</dt><dd><code data-origin>/login</code></dd><dt>Email</dt><dd><code><%= created.email %></code></dd><dt>Temporary password</dt><dd><code><%= created.password %></code></dd></dl>
+</div>
+<% } %>
+<section class="card">
+  <div class="table-wrap">
+  <table class="table">
+    <thead><tr><th>Name</th><th>Role</th><th>Conferences</th><th></th></tr></thead>
+    <tbody>
+    <% for (const p of users) { %>
+      <tr>
+        <td><strong><%= p.name %></strong><div class="muted small"><%= p.email %></div></td>
+        <td><%= p.role === 'admin' ? 'Administrator' : 'Editor' %></td>
+        <td class="small"><%= p.role === 'admin' ? 'All' : (p.event_names || '—') %></td>
+        <td class="nowrap">
+          <form class="inline" method="post" action="/manage/users/<%= p.id %>/reset" data-confirm="Reset <%= p.email %>’s password?"><%- include('../partials/csrf') %><button class="btn btn-small btn-outline">Reset password</button></form>
+          <% if (p.id !== user.id) { %>
+          <form class="inline" method="post" action="/manage/users/<%= p.id %>/delete" data-confirm="Remove <%= p.email %>’s account?"><%- include('../partials/csrf') %><button class="btn btn-small btn-ghost">Remove</button></form>
+          <% } %>
+        </td>
+      </tr>
+    <% } %>
+    </tbody>
+  </table>
+  </div>
+</section>
+<form class="card form" method="post">
+  <%- include('../partials/csrf') %>
+  <h2>Add a person</h2>
+  <p class="muted small">To give a partner access to their conference, it’s easiest to add them from that conference’s <em>Editors</em> tab.</p>
+  <div class="grid-3">
+    <label>Name <input name="name" required></label>
+    <label>Email <input type="email" name="email" required></label>
+    <label>Role <select name="role"><option value="editor">Editor</option><option value="admin">Administrator (central staff)</option></select></label>
+  </div>
+  <button class="btn">Create account</button>
+</form>
+<%- include('../partials/manage-foot') %>

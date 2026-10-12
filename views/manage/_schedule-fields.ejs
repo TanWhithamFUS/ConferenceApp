@@ -1,0 +1,28 @@
+<div class="grid-3">
+  <label>Day
+    <select name="date">
+      <% for (const d of dayOptions) { %><option value="<%= d %>" <%= form.date === d ? 'selected' : '' %>><%= u.formatDay(d) %></option><% } %>
+    </select>
+  </label>
+  <label>Start <input type="time" name="start_time" value="<%= form.start_time || '' %>" required></label>
+  <label>End <input type="time" name="end_time" value="<%= form.end_time || '' %>"></label>
+</div>
+<% if (!locals.locked) { %>
+<div class="grid-2">
+  <label>Title <input name="title" value="<%= form.title || '' %>" required></label>
+  <label>Type
+    <select name="kind">
+      <% for (const [k, v] of Object.entries(KINDS)) { %><option value="<%= k %>" <%= form.kind === k ? 'selected' : '' %>><%= v %></option><% } %>
+    </select>
+  </label>
+</div>
+<% } %>
+<label>Location / room <input name="location" value="<%= form.location || '' %>" placeholder="e.g. Main Arena"></label>
+<% if (!locals.locked) { %>
+<label>Description <textarea name="description" rows="3"><%= form.description || '' %></textarea></label>
+<% if (lineup.length) { const chosen = new Set((form.speaker_ids || []).map(Number)); %>
+<fieldset class="checks"><legend>Speakers</legend>
+  <% for (const s of lineup) { %><label class="check"><input type="checkbox" name="speaker_ids" value="<%= s.id %>" <%= chosen.has(s.id) ? 'checked' : '' %>> <%= s.name %></label><% } %>
+</fieldset>
+<% } %>
+<% } %>

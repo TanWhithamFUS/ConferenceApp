@@ -1,0 +1,31 @@
+<%- include('../partials/manage-top') %>
+<h1>New conference</h1>
+<form class="card form" method="post">
+  <%- include('../partials/csrf') %>
+  <label>Name <input name="name" value="<%= form.name || '' %>" placeholder="e.g. Steubenville Mid-America 2027" required></label>
+  <div class="grid-2">
+    <label>Type
+      <select name="audience">
+        <option value="youth" <%= form.audience === 'youth' ? 'selected' : '' %>>Youth Conference</option>
+        <option value="adult" <%= form.audience === 'adult' ? 'selected' : '' %>>Adult Conference</option>
+      </select>
+    </label>
+    <label>Run by
+      <select name="operated_by" data-toggle-partner>
+        <option value="franciscan" <%= form.operated_by === 'franciscan' ? 'selected' : '' %>>Franciscan University</option>
+        <option value="partner" <%= form.operated_by === 'partner' ? 'selected' : '' %>>Partner</option>
+      </select>
+    </label>
+  </div>
+  <label data-partner-field>Partner organization <input name="partner_name" value="<%= form.partner_name || '' %>" placeholder="e.g. Diocese of …"></label>
+  <div class="grid-2">
+    <label>Start date <input type="date" name="start_date" value="<%= form.start_date || '' %>" required></label>
+    <label>End date <input type="date" name="end_date" value="<%= form.end_date || '' %>" required></label>
+  </div>
+  <label>City <input name="city" value="<%= form.city || '' %>" placeholder="e.g. Steubenville, OH"></label>
+  <label>Web address <span class="muted small">(optional — created from the name if left blank)</span>
+    <input name="slug" value="<%= form.slug || '' %>" placeholder="mid-america-2027" pattern="[a-z0-9-]*">
+  </label>
+  <button class="btn">Create conference</button>
+</form>
+<%- include('../partials/manage-foot') %>

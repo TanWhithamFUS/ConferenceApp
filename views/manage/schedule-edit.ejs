@@ -1,0 +1,17 @@
+<%- include('../partials/manage-top') %>
+<%- include('../partials/event-nav') %>
+<form class="card form" method="post">
+  <%- include('../partials/csrf') %>
+  <h2><%= locked ? item.title : 'Edit schedule item' %></h2>
+  <% if (locked) { %>
+  <p class="muted small"><span class="badge badge-gold">Core</span> This session is part of the Steubenville Conferences program. You can change when and where it happens at your conference.</p>
+  <% } else if (item.template_item_id !== null) { %>
+  <p class="muted small"><span class="badge badge-gold">Core</span> Editing content here affects only this conference. Pushing the core program again will restore the program’s title and description.</p>
+  <% } %>
+  <%- include('_schedule-fields') %>
+  <div class="button-row">
+    <button class="btn">Save</button>
+    <a class="btn btn-ghost" href="/manage/events/<%= event.id %>/schedule">Cancel</a>
+  </div>
+</form>
+<%- include('../partials/manage-foot') %>

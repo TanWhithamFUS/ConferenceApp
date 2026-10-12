@@ -1,0 +1,23 @@
+<%- include('../partials/manage-top') %>
+<%- include('../partials/event-nav') %>
+<div class="qr-layout">
+  <div class="card qr-poster" id="qr-poster">
+    <div class="eyebrow"><%= event.audience === 'youth' ? 'Youth Conference' : 'Adult Conference' %></div>
+    <h2><%= event.name %></h2>
+    <div class="qr-code"><%- svg %></div>
+    <p><strong>Scan for the schedule, speakers &amp; live updates</strong></p>
+    <p class="muted small"><%= url %></p>
+  </div>
+  <div class="card form">
+    <h2>Share your conference</h2>
+    <p>Put this QR code on signs, lanyards, slides and emails. It opens this conference directly.</p>
+    <div class="button-row">
+      <a class="btn" href="/manage/events/<%= event.id %>/qr.png">Download PNG</a>
+      <a class="btn btn-outline" href="/manage/events/<%= event.id %>/qr.svg">Download SVG</a>
+      <button type="button" class="btn btn-outline" data-print>Print poster</button>
+    </div>
+    <label style="margin-top:12px">Link <input readonly value="<%= url %>" data-select-all></label>
+    <% if (!event.published) { %><p class="muted small">Note: attendees will see “not found” until this conference is published.</p><% } %>
+  </div>
+</div>
+<%- include('../partials/manage-foot') %>

@@ -1,0 +1,15 @@
+<%- include('../partials/manage-top') %>
+<%- include('../partials/event-nav') %>
+<form class="card form" method="post">
+  <%- include('../partials/csrf') %>
+  <h2>Speaker lineup</h2>
+  <p class="muted small">Choose who is speaking at this conference. Add new people in <a href="/manage/speakers">Speakers</a>.</p>
+  <% if (!speakers.length) { %><p class="muted">No speakers in the library yet.</p><% } %>
+  <div class="checks columns">
+    <% for (const s of speakers) { %>
+    <label class="check"><input type="checkbox" name="speaker_ids" value="<%= s.id %>" <%= selected.has(s.id) ? 'checked' : '' %>> <%= s.name %><% if (s.role_title) { %> <span class="muted small">— <%= s.role_title %></span><% } %></label>
+    <% } %>
+  </div>
+  <button class="btn">Save lineup</button>
+</form>
+<%- include('../partials/manage-foot') %>

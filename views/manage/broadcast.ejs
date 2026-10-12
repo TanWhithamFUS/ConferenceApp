@@ -1,0 +1,18 @@
+<%- include('../partials/manage-top') %>
+<h1>Send to many conferences</h1>
+<p class="muted">Post one announcement to every published conference at once — e.g. a prayer intention, a livestream link, or a ministry-wide update.</p>
+<form class="card form" method="post">
+  <%- include('../partials/csrf') %>
+  <label>Send to
+    <select name="audience">
+      <option value="all">All published conferences (<%= counts.all %>)</option>
+      <option value="youth">Youth Conferences (<%= counts.youth %>)</option>
+      <option value="adult">Adult Conferences (<%= counts.adult %>)</option>
+    </select>
+  </label>
+  <label>Title <input name="title" maxlength="120" required></label>
+  <label>Message <textarea name="body" rows="4" maxlength="2000"></textarea></label>
+  <label class="check"><input type="checkbox" name="send_push" value="1" checked> Also send as a push notification</label>
+  <button class="btn" data-confirm="Send this to every selected conference?">Send</button>
+</form>
+<%- include('../partials/manage-foot') %>

@@ -1,0 +1,36 @@
+<%- include('../partials/manage-top') %>
+<%- include('../partials/event-nav') %>
+<% if (created) { %>
+<div class="card credentials">
+  <h2>Account created</h2>
+  <p>Send these sign-in details to the partner. The password is shown only once — they can change it under <em>Account</em> after signing in.</p>
+  <dl><dt>Sign-in page</dt><dd><code data-origin>/login</code></dd><dt>Email</dt><dd><code><%= created.email %></code></dd><dt>Temporary password</dt><dd><code><%= created.password %></code></dd></dl>
+</div>
+<% } %>
+<section class="card">
+  <h2>Who can edit this conference</h2>
+  <p class="muted small">Editors can update details, the local schedule, info &amp; FAQs, and post announcements for this conference only. Central staff can always edit.</p>
+  <% if (!editors.length) { %><p class="muted">No editors yet.</p><% } %>
+  <ul class="admin-list">
+    <% for (const ed of editors) { %>
+    <li>
+      <div class="admin-list-main"><strong><%= ed.name %></strong><div class="muted small"><%= ed.email %></div></div>
+      <div class="admin-list-actions">
+        <form method="post" action="/manage/events/<%= event.id %>/editors/<%= ed.id %>/remove" data-confirm="Remove <%= ed.email %>’s access?">
+          <%- include('../partials/csrf') %><button class="btn btn-small btn-ghost">Remove</button>
+        </form>
+      </div>
+    </li>
+    <% } %>
+  </ul>
+</section>
+<form class="card form" method="post">
+  <%- include('../partials/csrf') %>
+  <h2>Give someone access</h2>
+  <div class="grid-2">
+    <label>Email <input type="email" name="email" required></label>
+    <label>Name <span class="muted small">(for new accounts)</span><input name="name"></label>
+  </div>
+  <button class="btn">Add editor</button>
+</form>
+<%- include('../partials/manage-foot') %>

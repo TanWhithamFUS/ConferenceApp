@@ -1,0 +1,14 @@
+<%- include('head') %>
+<% if (locals.preview) { %>
+<div class="preview-bar">Preview — this conference isn’t published yet. Only editors can see it.</div>
+<% } %>
+<header class="event-header">
+  <a class="back-link" href="/" aria-label="All conferences">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+  <div class="event-header-text">
+    <div class="eyebrow"><%= event.audience === 'youth' ? 'Youth Conference' : 'Adult Conference' %></div>
+    <div class="event-header-name"><%= event.name %></div>
+  </div>
+</header>
+<main class="event-main" data-event-slug="<%= event.slug %>" data-event-name="<%= event.name %>">

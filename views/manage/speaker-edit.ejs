@@ -1,0 +1,8 @@
+<%- include('../partials/manage-top') %>
+<form class="card form" method="post">
+  <%- include('../partials/csrf') %>
+  <h1><%= speaker.name %></h1>
+  <%- include('_speaker-fields') %>
+  <div class="button-row"><button class="btn">Save</button><a class="btn btn-ghost" href="/manage/speakers">Cancel</a></div>
+</form>
+<%- include('../partials/manage-foot') %>

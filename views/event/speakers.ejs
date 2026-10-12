@@ -1,0 +1,22 @@
+<%- include('../partials/event-top') %>
+<div class="page-head"><h1>Speakers</h1></div>
+<% if (!speakers.length) { %>
+  <div class="card"><p class="muted">Speakers will be announced soon.</p></div>
+<% } %>
+<div class="stack">
+<% for (const s of speakers) { %>
+  <article class="card speaker">
+    <% if (u.safeUrl(s.photo_url)) { %>
+      <img class="avatar" src="<%= s.photo_url %>" alt="" loading="lazy">
+    <% } else { %>
+      <div class="avatar avatar-initials" aria-hidden="true"><%= s.name.split(/\s+/).filter(w => /^[A-Z]/.test(w)).slice(-2).map(w => w[0]).join('') %></div>
+    <% } %>
+    <div class="speaker-body">
+      <h2><%= s.name %></h2>
+      <% if (s.role_title) { %><p class="muted"><%= s.role_title %></p><% } %>
+      <% if (s.bio) { %><details><summary>About</summary><div class="prose"><%- u.richText(s.bio) %></div></details><% } %>
+    </div>
+  </article>
+<% } %>
+</div>
+<%- include('../partials/event-tabs') %>

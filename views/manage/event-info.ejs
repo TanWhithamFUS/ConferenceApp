@@ -1,0 +1,29 @@
+<%- include('../partials/manage-top') %>
+<%- include('../partials/event-nav') %>
+<p class="muted small">Add anything attendees need on site: parking, check-in, what to bring, meals, lodging, medical, Wi-Fi. FAQs appear as tap-to-open questions.</p>
+<% for (const [cat, label] of [['info', 'Info sections'], ['faq', 'FAQs']]) { const list = items.filter(i => i.category === cat); %>
+<section class="card">
+  <h2><%= label %></h2>
+  <% if (!list.length) { %><p class="muted">None yet.</p><% } %>
+  <ul class="admin-list">
+    <% for (const item of list) { %>
+    <li>
+      <div class="admin-list-main"><strong><%= item.title %></strong><div class="muted small clamp"><%= item.body %></div></div>
+      <div class="admin-list-actions">
+        <a class="btn btn-small btn-outline" href="/manage/events/<%= event.id %>/info/<%= item.id %>">Edit</a>
+        <form method="post" action="/manage/events/<%= event.id %>/info/<%= item.id %>/delete" data-confirm="Remove “<%= item.title %>”?">
+          <%- include('../partials/csrf') %><button class="btn btn-small btn-ghost">Remove</button>
+        </form>
+      </div>
+    </li>
+    <% } %>
+  </ul>
+</section>
+<% } %>
+<form class="card form" method="post" action="/manage/events/<%= event.id %>/info">
+  <%- include('../partials/csrf') %>
+  <h2>Add info or FAQ</h2>
+  <%- include('_info-fields') %>
+  <button class="btn">Add</button>
+</form>
+<%- include('../partials/manage-foot') %>

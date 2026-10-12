@@ -1,0 +1,24 @@
+<%- include('../partials/manage-top') %>
+<h1>Core programs</h1>
+<p class="muted">The programming Steubenville Conferences controls. Build it once, then push it into every conference’s schedule. Partners can adjust a core session’s time and room, but not its content.</p>
+<section class="card">
+  <% if (!templates.length) { %><p class="muted">No programs yet.</p><% } %>
+  <ul class="admin-list">
+    <% for (const t of templates) { %>
+    <li>
+      <div class="admin-list-main"><a href="/manage/programs/<%= t.id %>"><strong><%= t.name %></strong></a><div class="muted small"><%= t.audience === 'youth' ? 'Youth' : 'Adult' %> · <%= t.items %> session<%= t.items === 1 ? '' : 's' %></div></div>
+      <div class="admin-list-actions"><a class="btn btn-small btn-outline" href="/manage/programs/<%= t.id %>">Open</a></div>
+    </li>
+    <% } %>
+  </ul>
+</section>
+<form class="card form" method="post">
+  <%- include('../partials/csrf') %>
+  <h2>New program</h2>
+  <div class="grid-2">
+    <label>Name <input name="name" required placeholder="e.g. 2027 Youth Core Program"></label>
+    <label>For <select name="audience"><option value="youth">Youth Conferences</option><option value="adult">Adult Conferences</option></select></label>
+  </div>
+  <button class="btn">Create program</button>
+</form>
+<%- include('../partials/manage-foot') %>

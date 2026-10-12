@@ -1,0 +1,11 @@
+<%- include('../partials/manage-top') %>
+<h1>My account</h1>
+<p class="muted">Signed in as <strong><%= user.name %></strong> (<%= user.email %>) · <%= user.role === 'admin' ? 'Administrator' : 'Conference editor' %></p>
+<form class="card form narrow-form" method="post">
+  <%- include('../partials/csrf') %>
+  <h2>Change password</h2>
+  <label>Current password <input type="password" name="current" required autocomplete="current-password"></label>
+  <label>New password <input type="password" name="password" minlength="8" required autocomplete="new-password"></label>
+  <button class="btn">Update password</button>
+</form>
+<%- include('../partials/manage-foot') %>

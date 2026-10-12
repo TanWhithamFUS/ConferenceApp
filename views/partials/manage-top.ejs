@@ -1,0 +1,18 @@
+<%- include('head', { manage: true }) %>
+<header class="manage-header">
+  <a class="manage-brand" href="/manage">Steubenville <span>Conferences</span></a>
+  <nav class="manage-nav">
+    <a href="/manage">Conferences</a>
+    <% if (locals.isAdmin) { %>
+    <a href="/manage/programs">Core programs</a>
+    <a href="/manage/speakers">Speakers</a>
+    <a href="/manage/broadcast">Broadcast</a>
+    <a href="/manage/users">People</a>
+    <% } %>
+    <a href="/manage/account">Account</a>
+    <form method="post" action="/logout" class="inline"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="linklike">Sign out</button></form>
+  </nav>
+</header>
+<main class="manage-main">
+<% if (locals.flash) { %><div class="flash" role="status"><%= flash %></div><% } %>
+<% if (locals.error) { %><div class="flash flash-error" role="alert"><%= error %></div><% } %>

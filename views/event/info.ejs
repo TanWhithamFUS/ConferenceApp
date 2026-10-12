@@ -1,0 +1,47 @@
+<%- include('../partials/event-top') %>
+<div class="page-head"><h1>Info</h1></div>
+<div class="stack">
+  <% for (const item of info) { %>
+  <section class="card">
+    <h2 class="section-title"><%= item.title %></h2>
+    <div class="prose"><%- u.richText(item.body) %></div>
+  </section>
+  <% } %>
+
+  <% if (faq.length) { %>
+  <section>
+    <h2 class="section-title">Frequently asked questions</h2>
+    <div class="faq">
+      <% for (const q of faq) { %>
+      <details class="card"><summary><%= q.title %></summary><div class="prose"><%- u.richText(q.body) %></div></details>
+      <% } %>
+    </div>
+  </section>
+  <% } %>
+
+  <% if (event.contact_name || event.contact_email || event.contact_phone) { %>
+  <section class="card">
+    <h2 class="section-title">Contact</h2>
+    <% if (event.contact_name) { %><p><strong><%= event.contact_name %></strong></p><% } %>
+    <div class="button-row">
+      <% if (event.contact_phone) { %><a class="btn btn-small btn-outline" href="tel:<%= event.contact_phone.replace(/[^\d+]/g, '') %>">Call <%= event.contact_phone %></a><% } %>
+      <% if (event.contact_email) { %><a class="btn btn-small btn-outline" href="mailto:<%= event.contact_email %>">Email</a><% } %>
+    </div>
+  </section>
+  <% } %>
+
+  <% if (u.safeUrl(event.website_url) || u.safeUrl(event.registration_url)) { %>
+  <section class="card">
+    <h2 class="section-title">Links</h2>
+    <ul class="link-list">
+      <% if (u.safeUrl(event.registration_url)) { %><li><a href="<%= event.registration_url %>" target="_blank" rel="noopener">Registration</a></li><% } %>
+      <% if (u.safeUrl(event.website_url)) { %><li><a href="<%= event.website_url %>" target="_blank" rel="noopener">Conference website</a></li><% } %>
+    </ul>
+  </section>
+  <% } %>
+
+  <% if (!info.length && !faq.length && !event.contact_name && !event.contact_email && !event.contact_phone) { %>
+  <div class="card"><p class="muted">More information is coming soon.</p></div>
+  <% } %>
+</div>
+<%- include('../partials/event-tabs') %>

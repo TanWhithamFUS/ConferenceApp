@@ -1,0 +1,39 @@
+<%- include('../partials/manage-top') %>
+<%- include('../partials/event-nav') %>
+<p class="muted small">
+  <span class="badge badge-gold">Core</span> sessions come from the Steubenville Conferences program.
+  <%= isAdmin ? 'Push program updates from Core programs.' : 'You can adjust their time and room; their content is set centrally. Add your own local items (meals, check-in, small groups…) below.' %>
+</p>
+<% if (!days.length) { %><div class="card"><p class="muted">No schedule items yet.</p></div><% } %>
+<% for (const d of days) { %>
+<section class="card">
+  <h2><%= u.formatDay(d.date) %></h2>
+  <ul class="admin-list">
+    <% for (const item of d.items) { %>
+    <li>
+      <div class="admin-list-time"><%= u.formatTime(item.start_time) %><% if (item.end_time) { %>–<%= u.formatTime(item.end_time) %><% } %></div>
+      <div class="admin-list-main">
+        <strong><%= item.title %></strong>
+        <% if (item.core) { %><span class="badge badge-gold">Core</span><% } %>
+        <div class="muted small"><%= KINDS[item.kind] %><% if (item.location) { %> · <%= item.location %><% } %><% if (item.speakers.length) { %> · <%= item.speakers.map(s => s.name).join(', ') %><% } %></div>
+      </div>
+      <div class="admin-list-actions">
+        <a class="btn btn-small btn-outline" href="/manage/events/<%= event.id %>/schedule/<%= item.id %>">Edit</a>
+        <% if (!item.core || isAdmin) { %>
+        <form method="post" action="/manage/events/<%= event.id %>/schedule/<%= item.id %>/delete" data-confirm="Remove “<%= item.title %>”?">
+          <%- include('../partials/csrf') %><button class="btn btn-small btn-ghost">Remove</button>
+        </form>
+        <% } %>
+      </div>
+    </li>
+    <% } %>
+  </ul>
+</section>
+<% } %>
+<form class="card form" method="post" action="/manage/events/<%= event.id %>/schedule" id="add">
+  <%- include('../partials/csrf') %>
+  <h2>Add a schedule item</h2>
+  <%- include('_schedule-fields', { locked: false }) %>
+  <button class="btn">Add to schedule</button>
+</form>
+<%- include('../partials/manage-foot') %>

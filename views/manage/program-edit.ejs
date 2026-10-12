@@ -1,0 +1,52 @@
+<%- include('../partials/manage-top') %>
+<div class="page-head">
+  <div><div class="eyebrow"><%= template.audience === 'youth' ? 'Youth' : 'Adult' %> core program</div><h1><%= template.name %></h1></div>
+</div>
+<section class="card">
+  <h2>Sessions</h2>
+  <p class="muted small">Day 1 is each conference’s first day. Times are defaults — sites can shift them locally.</p>
+  <% if (!items.length) { %><p class="muted">No sessions yet.</p><% } %>
+  <div class="stack">
+  <% for (const it of items) { %>
+    <details class="program-item">
+      <summary><span class="muted">Day <%= it.day_number %> · <%= u.formatTime(it.start_time) %></span> <strong><%= it.title %></strong> <span class="muted small"><%= KINDS[it.kind] %></span></summary>
+      <form class="form" method="post" action="/manage/programs/<%= template.id %>/items/<%= it.id %>">
+        <%- include('../partials/csrf') %>
+        <%- include('_program-item-fields', { f: it }) %>
+        <div class="button-row">
+          <button class="btn btn-small">Save</button>
+          <button class="btn btn-small btn-ghost" formaction="/manage/programs/<%= template.id %>/items/<%= it.id %>/delete" data-confirm="Remove this session from the program and from every conference?">Remove</button>
+        </div>
+      </form>
+    </details>
+  <% } %>
+  </div>
+</section>
+<form class="card form" method="post" action="/manage/programs/<%= template.id %>/items">
+  <%- include('../partials/csrf') %>
+  <h2>Add a session</h2>
+  <%- include('_program-item-fields', { f: form }) %>
+  <button class="btn">Add session</button>
+</form>
+<form class="card form" method="post" action="/manage/programs/<%= template.id %>/apply">
+  <%- include('../partials/csrf') %>
+  <h2>Push to conferences</h2>
+  <p class="muted small">Adds new sessions and refreshes titles/descriptions. Each site’s local times and rooms are kept.</p>
+  <% if (!events.length) { %><p class="muted">No <%= template.audience %> conferences yet.</p><% } else { %>
+  <label class="check"><input type="checkbox" data-check-all="event_ids"> <strong>Select all</strong></label>
+  <div class="checks columns">
+    <% for (const e of events) { %>
+    <label class="check"><input type="checkbox" name="event_ids" value="<%= e.id %>"> <%= e.name %>
+      <span class="muted small"><%= e.applied ? `· ${e.applied} sessions applied` : '· not applied' %></span></label>
+    <% } %>
+  </div>
+  <button class="btn">Push program</button>
+  <% } %>
+</form>
+<form class="card danger-zone" method="post" action="/manage/programs/<%= template.id %>/delete" data-confirm="Delete this program and remove its sessions from every conference?">
+  <%- include('../partials/csrf') %>
+  <h2>Delete program</h2>
+  <p class="muted small">Also removes its sessions from every conference schedule.</p>
+  <button class="btn btn-danger">Delete program</button>
+</form>
+<%- include('../partials/manage-foot') %>

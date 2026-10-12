@@ -1,0 +1,14 @@
+<%- include('../partials/head', { manage: true }) %>
+<main class="narrow center-page">
+  <form class="card form" method="post" action="/login">
+    <h1>Sign in</h1>
+    <p class="muted">For Steubenville Conferences staff and conference partners.</p>
+    <% if (error) { %><div class="flash flash-error" role="alert"><%= error %></div><% } %>
+    <input type="hidden" name="next" value="<%= next %>">
+    <label>Email <input type="email" name="email" value="<%= email %>" required autocomplete="username" autofocus></label>
+    <label>Password <input type="password" name="password" required autocomplete="current-password"></label>
+    <button class="btn">Sign in</button>
+    <p class="muted small">Forgot your password? Ask your Steubenville Conferences contact to reset it.</p>
+  </form>
+</main>
+<%- include('../partials/foot') %>

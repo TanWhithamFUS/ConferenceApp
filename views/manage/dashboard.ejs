@@ -1,0 +1,31 @@
+<%- include('../partials/manage-top') %>
+<div class="page-head">
+  <h1><%= isAdmin ? 'All conferences' : 'Your conferences' %></h1>
+  <% if (isAdmin) { %><a class="btn" href="/manage/events/new">+ New conference</a><% } %>
+</div>
+<% if (!events.length) { %>
+  <div class="card"><p><%= isAdmin ? 'No conferences yet. Create your first one.' : 'You haven’t been given access to a conference yet. Contact Steubenville Conferences staff.' %></p></div>
+<% } %>
+<% for (const [label, aud] of [['Youth Conferences', 'youth'], ['Adult Conferences', 'adult']]) { const list = events.filter(e => e.audience === aud); if (!list.length) continue; %>
+<section class="dash-section">
+  <h2><%= label %> <span class="muted">(<%= list.length %>)</span></h2>
+  <div class="table-wrap">
+  <table class="table">
+    <thead><tr><th>Conference</th><th>Dates</th><th>Run by</th><th>Sessions</th><th>Notified devices</th><th>Status</th></tr></thead>
+    <tbody>
+    <% for (const e of list) { %>
+      <tr>
+        <td><a href="/manage/events/<%= e.id %>"><strong><%= e.name %></strong></a><% if (e.city) { %><div class="muted small"><%= e.city %></div><% } %></td>
+        <td><%= u.formatDateRange(e.start_date, e.end_date) %></td>
+        <td><%= e.operated_by === 'partner' ? (e.partner_name || 'Partner') : 'Franciscan' %></td>
+        <td><%= e.sessions %></td>
+        <td><%= e.subscribers %></td>
+        <td><span class="badge <%= e.published ? 'badge-green' : 'badge-gray' %>"><%= e.published ? 'Published' : 'Draft' %></span></td>
+      </tr>
+    <% } %>
+    </tbody>
+  </table>
+  </div>
+</section>
+<% } %>
+<%- include('../partials/manage-foot') %>

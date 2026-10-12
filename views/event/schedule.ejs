@@ -1,0 +1,51 @@
+<%- include('../partials/event-top') %>
+<div class="page-head">
+  <h1>Schedule</h1>
+  <label class="toggle">
+    <input type="checkbox" id="mine-only"> <span>My schedule</span>
+  </label>
+</div>
+<% if (!days.length) { %>
+  <div class="card"><p class="muted">The schedule hasn’t been posted yet. Check back soon!</p></div>
+<% } else { %>
+  <div class="day-tabs" role="tablist">
+    <% days.forEach((d, i) => { %>
+    <button type="button" role="tab" class="day-tab<%= i === 0 ? ' active' : '' %>" data-day="<%= d.date %>" aria-selected="<%= i === 0 %>"><%= u.formatDay(d.date).split(',')[0] %></button>
+    <% }) %>
+  </div>
+  <% days.forEach((d, i) => { %>
+  <section class="day" data-day="<%= d.date %>" <%= i === 0 ? '' : 'hidden' %>>
+    <h2 class="day-title"><%= u.formatDay(d.date) %></h2>
+    <ol class="timeline">
+      <% for (const item of d.items) { %>
+      <li class="slot kind-<%= item.kind %>" data-id="<%= item.id %>" data-date="<%= item.date %>" data-start="<%= item.start_time %>" data-end="<%= item.end_time %>">
+        <div class="slot-time">
+          <%= u.formatTime(item.start_time) %>
+          <% if (item.end_time) { %><span><%= u.formatTime(item.end_time) %></span><% } %>
+        </div>
+        <div class="slot-body">
+          <div class="slot-top">
+            <span class="kind"><%= u.KINDS[item.kind] || 'Session' %></span>
+            <button type="button" class="star" aria-pressed="false" aria-label="Add to my schedule" data-star="<%= item.id %>">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <h3><%= item.title %></h3>
+          <% if (item.location || item.speakers.length) { %>
+          <p class="slot-meta">
+            <% if (item.location) { %><span>📍 <%= item.location %></span><% } %>
+            <% if (item.speakers.length) { %><span>🎤 <%= item.speakers.map(s => s.name).join(', ') %></span><% } %>
+          </p>
+          <% } %>
+          <% if (item.description) { %>
+          <details><summary>Details</summary><div class="prose"><%- u.richText(item.description) %></div></details>
+          <% } %>
+        </div>
+      </li>
+      <% } %>
+    </ol>
+  </section>
+  <% }) %>
+  <p id="mine-empty" class="muted center" hidden>Tap the ☆ on any session to add it to your schedule.</p>
+<% } %>
+<%- include('../partials/event-tabs') %>

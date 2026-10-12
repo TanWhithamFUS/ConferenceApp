@@ -1,0 +1,26 @@
+<%- include('../partials/manage-top') %>
+<h1>Speakers</h1>
+<p class="muted">One shared library of speakers. Add them to each conference’s lineup from that conference’s <em>Speakers</em> tab.</p>
+<section class="card">
+  <% if (!speakers.length) { %><p class="muted">No speakers yet.</p><% } %>
+  <ul class="admin-list">
+    <% for (const s of speakers) { %>
+    <li>
+      <div class="admin-list-main"><strong><%= s.name %></strong><div class="muted small"><%= s.role_title %><%= s.role_title ? ' · ' : '' %><%= s.events %> conference<%= s.events === 1 ? '' : 's' %></div></div>
+      <div class="admin-list-actions">
+        <a class="btn btn-small btn-outline" href="/manage/speakers/<%= s.id %>">Edit</a>
+        <form method="post" action="/manage/speakers/<%= s.id %>/delete" data-confirm="Remove <%= s.name %> from every conference?">
+          <%- include('../partials/csrf') %><button class="btn btn-small btn-ghost">Remove</button>
+        </form>
+      </div>
+    </li>
+    <% } %>
+  </ul>
+</section>
+<form class="card form" method="post">
+  <%- include('../partials/csrf') %>
+  <h2>Add a speaker</h2>
+  <%- include('_speaker-fields') %>
+  <button class="btn">Add speaker</button>
+</form>
+<%- include('../partials/manage-foot') %>

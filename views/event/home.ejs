@@ -1,0 +1,68 @@
+<%- include('../partials/event-top') %>
+<section class="event-hero">
+  <h1><%= event.name %></h1>
+  <p class="event-hero-meta">
+    <%= u.formatDateRange(event.start_date, event.end_date) %>
+    <% if (event.venue || event.city) { %><br><%= [event.venue, event.city].filter(Boolean).join(' · ') %><% } %>
+  </p>
+  <div class="button-row">
+    <% if (u.safeUrl(event.registration_url)) { %>
+    <a class="btn btn-gold" href="<%= event.registration_url %>" target="_blank" rel="noopener">Register</a>
+    <% } %>
+    <a class="btn btn-outline-light" href="/e/<%= event.slug %>/schedule">View schedule</a>
+  </div>
+</section>
+
+<div class="stack">
+  <div id="push-card" class="card push-card" hidden>
+    <div class="push-card-text">
+      <strong>Get live updates</strong>
+      <span id="push-status">Turn on notifications for schedule changes and announcements.</span>
+    </div>
+    <button type="button" id="push-toggle" class="btn btn-small">Turn on</button>
+  </div>
+  <div id="ios-hint" class="card hint" hidden>
+    <strong>Using an iPhone?</strong> To get notifications, tap
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-label="Share" style="vertical-align:-3px"><path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <strong>Share</strong>, then <strong>Add to Home Screen</strong>, and open the app from your home screen.
+  </div>
+
+  <% const live = schedule.map(i => ({ d: i.date, s: i.start_time, e: i.end_time, t: i.title, l: i.location })); %>
+  <section id="now-next" class="card now-next" hidden data-items="<%= JSON.stringify(live) %>">
+    <h2 class="section-title">Right now</h2>
+    <div id="now-next-body"></div>
+    <a class="link-more" href="/e/<%= event.slug %>/schedule">Full schedule →</a>
+  </section>
+
+  <% if (event.welcome) { %>
+  <section class="card">
+    <h2 class="section-title">Welcome</h2>
+    <div class="prose"><%- u.richText(event.welcome) %></div>
+  </section>
+  <% } %>
+
+  <section>
+    <div class="section-head">
+      <h2 class="section-title">Announcements</h2>
+      <% if (announcements.length) { %><a class="link-more" href="/e/<%= event.slug %>/news">See all</a><% } %>
+    </div>
+    <% if (announcements.length) { %>
+      <% for (const a of announcements) { %><%- include('../partials/announcement', { a }) %><% } %>
+    <% } else { %>
+      <p class="muted">No announcements yet.</p>
+    <% } %>
+  </section>
+
+  <% if (event.venue || event.address) { %>
+  <section class="card">
+    <h2 class="section-title">Location</h2>
+    <p><strong><%= event.venue %></strong><% if (event.address) { %><br><%= event.address %><% } %></p>
+    <% if (u.safeUrl(event.map_url)) { %>
+    <a class="btn btn-small btn-outline" href="<%= event.map_url %>" target="_blank" rel="noopener">Open map</a>
+    <% } else if (event.address) { %>
+    <a class="btn btn-small btn-outline" href="https://maps.google.com/?q=<%= encodeURIComponent(event.address) %>" target="_blank" rel="noopener">Directions</a>
+    <% } %>
+  </section>
+  <% } %>
+</div>
+<%- include('../partials/event-tabs') %>

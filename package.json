@@ -1,0 +1,23 @@
+{
+  "name": "steubenville-conferences-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mobile-friendly event app for Steubenville Conferences (Youth and Adult), with partner-managed conference pages and push notifications.",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch server.js",
+    "seed": "node --disable-warning=ExperimentalWarning scripts/seed.js",
+    "icons": "node scripts/make-icons.js",
+    "test": "node --disable-warning=ExperimentalWarning --test"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "qrcode": "^1.5.4",
+    "web-push": "^3.6.7"
+  }
+}

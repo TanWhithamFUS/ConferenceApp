@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title><%= title %></title>
+  <meta name="theme-color" content="#1f4d3a">
+  <meta name="csrf-token" content="<%= locals.csrfToken || '' %>">
+  <% if (locals.event && !locals.manage) { %>
+  <link rel="manifest" href="/e/<%= event.slug %>/manifest.webmanifest">
+  <meta name="apple-mobile-web-app-title" content="<%= event.name.length > 14 ? 'Steubenville' : event.name %>">
+  <% } else { %>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <% } %>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body class="<%= locals.manage ? 'manage' : 'attendee' %>">

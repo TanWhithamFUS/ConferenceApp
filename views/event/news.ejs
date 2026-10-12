@@ -1,0 +1,7 @@
+<%- include('../partials/event-top') %>
+<div class="page-head"><h1>Announcements</h1></div>
+<div class="stack">
+  <% if (!announcements.length) { %><div class="card"><p class="muted">No announcements yet.</p></div><% } %>
+  <% for (const a of announcements) { %><%- include('../partials/announcement', { a }) %><% } %>
+</div>
+<%- include('../partials/event-tabs') %>

@@ -1,0 +1,13 @@
+<%- include('../partials/head', { manage: true }) %>
+<main class="narrow center-page">
+  <form class="card form" method="post" action="/setup">
+    <h1>Welcome!</h1>
+    <p class="muted">Create the first administrator account for Steubenville Conferences.</p>
+    <% if (error) { %><div class="flash flash-error" role="alert"><%= error %></div><% } %>
+    <label>Your name <input name="name" required></label>
+    <label>Email <input type="email" name="email" required autocomplete="username"></label>
+    <label>Password <input type="password" name="password" minlength="8" required autocomplete="new-password"></label>
+    <button class="btn">Create account</button>
+  </form>
+</main>
+<%- include('../partials/foot') %>

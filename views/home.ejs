@@ -1,0 +1,48 @@
+<%- include('partials/head') %>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 64 64" width="44" height="44"><path d="M32 6v52M14 22h36" stroke="currentColor" stroke-width="6" stroke-linecap="round"/></svg>
+    </div>
+    <h1><%= orgName %></h1>
+    <p>Find your conference for the schedule, speakers, announcements and everything you need on site.</p>
+  </div>
+</header>
+<main class="narrow">
+  <div id="continue" class="continue-card" hidden></div>
+
+  <label class="search">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input type="search" id="event-search" placeholder="Search by name or city" autocomplete="off" aria-label="Search conferences">
+  </label>
+
+  <% for (const [label, list] of [['Youth Conferences', youth], ['Adult Conferences', adult]]) { %>
+    <% if (list.length) { %>
+    <section class="event-group">
+      <h2><%= label %></h2>
+      <ul class="event-list">
+        <% for (const e of list) { %>
+        <li data-search="<%= (e.name + ' ' + e.city + ' ' + e.venue).toLowerCase() %>">
+          <a class="event-card" href="/e/<%= e.slug %>">
+            <div>
+              <div class="event-card-name"><%= e.name %></div>
+              <div class="event-card-meta"><%= u.formatDateRange(e.start_date, e.end_date) %><% if (e.city) { %> · <%= e.city %><% } %></div>
+            </div>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+        </li>
+        <% } %>
+      </ul>
+    </section>
+    <% } %>
+  <% } %>
+  <p id="no-results" class="muted center" hidden>No conferences match your search.</p>
+  <% if (!youth.length && !adult.length) { %>
+  <div class="card center"><p>No conferences are published yet. Check back soon!</p></div>
+  <% } %>
+  <footer class="site-footer">
+    <a href="https://steubenvilleconferences.com" target="_blank" rel="noopener">steubenvilleconferences.com</a>
+    · <a href="/login">Staff &amp; partner sign in</a>
+  </footer>
+</main>
+<%- include('partials/foot') %>

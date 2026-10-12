@@ -1,0 +1,8 @@
+<article class="card announcement">
+  <div class="announcement-meta">
+    <% if (a.from_central) { %><span class="badge badge-gold">Steubenville Conferences</span><% } %>
+    <time><%= u.timeAgo(a.created_at) %></time>
+  </div>
+  <h3><%= a.title %></h3>
+  <div class="prose"><%- u.richText(a.body) %></div>
+</article>

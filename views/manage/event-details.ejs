@@ -1,0 +1,78 @@
+<%- include('../partials/manage-top') %>
+<%- include('../partials/event-nav') %>
+<form class="form" method="post" action="/manage/events/<%= event.id %>">
+  <%- include('../partials/csrf') %>
+  <% if (isAdmin) { %>
+  <fieldset class="card">
+    <legend>Conference setup <span class="badge badge-gold">Central staff only</span></legend>
+    <label>Name <input name="name" value="<%= form.name %>" required></label>
+    <div class="grid-2">
+      <label>Type
+        <select name="audience">
+          <option value="youth" <%= form.audience === 'youth' ? 'selected' : '' %>>Youth Conference</option>
+          <option value="adult" <%= form.audience === 'adult' ? 'selected' : '' %>>Adult Conference</option>
+        </select>
+      </label>
+      <label>Run by
+        <select name="operated_by" data-toggle-partner>
+          <option value="franciscan" <%= form.operated_by === 'franciscan' ? 'selected' : '' %>>Franciscan University</option>
+          <option value="partner" <%= form.operated_by === 'partner' ? 'selected' : '' %>>Partner</option>
+        </select>
+      </label>
+    </div>
+    <label data-partner-field>Partner organization <input name="partner_name" value="<%= form.partner_name %>"></label>
+    <div class="grid-2">
+      <label>Start date <input type="date" name="start_date" value="<%= form.start_date %>" required></label>
+      <label>End date <input type="date" name="end_date" value="<%= form.end_date %>" required></label>
+    </div>
+    <label>Web address <span class="muted small">/e/…</span> <input name="slug" value="<%= form.slug %>" pattern="[a-z0-9-]*"></label>
+    <label class="check"><input type="checkbox" name="published" value="1" <%= form.published ? 'checked' : '' %>> Published — attendees can see this conference</label>
+  </fieldset>
+  <% } else { %>
+  <div class="card muted small">
+    The conference name, dates, and core program are set by Steubenville Conferences. Everything below is yours to edit.
+    <% if (!event.published) { %><br><strong>This conference is still a draft.</strong> Your Steubenville Conferences contact will publish it when it’s ready.<% } %>
+  </div>
+  <% } %>
+
+  <fieldset class="card">
+    <legend>Welcome &amp; registration</legend>
+    <label>Welcome message <span class="muted small">(shown on the conference home screen)</span>
+      <textarea name="welcome" rows="5"><%= form.welcome %></textarea>
+    </label>
+    <label>Registration link <input type="url" name="registration_url" value="<%= form.registration_url %>" placeholder="https://…"></label>
+    <label>Conference website <input type="url" name="website_url" value="<%= form.website_url %>" placeholder="https://…"></label>
+  </fieldset>
+
+  <fieldset class="card">
+    <legend>Location</legend>
+    <div class="grid-2">
+      <label>Venue <input name="venue" value="<%= form.venue %>" placeholder="e.g. Finnegan Fieldhouse"></label>
+      <label>City <input name="city" value="<%= form.city %>"></label>
+    </div>
+    <label>Address <input name="address" value="<%= form.address %>"></label>
+    <label>Map link <span class="muted small">(optional — e.g. a Google Maps link or a campus map)</span>
+      <input type="url" name="map_url" value="<%= form.map_url %>" placeholder="https://…">
+    </label>
+  </fieldset>
+
+  <fieldset class="card">
+    <legend>On-site contact</legend>
+    <div class="grid-3">
+      <label>Name <input name="contact_name" value="<%= form.contact_name %>"></label>
+      <label>Email <input type="email" name="contact_email" value="<%= form.contact_email %>"></label>
+      <label>Phone <input type="tel" name="contact_phone" value="<%= form.contact_phone %>"></label>
+    </div>
+  </fieldset>
+  <div class="sticky-actions"><button class="btn">Save changes</button></div>
+</form>
+
+<% if (isAdmin) { %>
+<form class="card danger-zone form" method="post" action="/manage/events/<%= event.id %>/delete">
+  <%- include('../partials/csrf') %>
+  <h2>Delete conference</h2>
+  <p class="muted small">This permanently removes the conference, its schedule, info, and announcements. Type <code><%= event.slug %></code> to confirm.</p>
+  <div class="inline-form"><input name="confirm" autocomplete="off" aria-label="Confirm web address"><button class="btn btn-danger">Delete</button></div>
+</form>
+<% } %>
+<%- include('../partials/manage-foot') %>
